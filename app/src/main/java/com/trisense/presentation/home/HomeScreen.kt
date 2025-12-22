@@ -94,7 +94,7 @@ fun HomeScreen(
 
                 GameCard(
                     title = "Blind Timing",
-                    score = "Best Error: ${state.timingBest}",
+                    score = "Best: ${state.timingBest}",
                     icon = Icons.Rounded.Timer,
                     themeColor = Teal600,
                     bgColor = Teal50,
@@ -107,7 +107,7 @@ fun HomeScreen(
 
                 GameCard(
                     title = "Rapid Grid",
-                    score = "Best Time: ${state.numberBest}",
+                    score = "Best: ${state.numberBest}",
                     icon = Icons.Rounded.GridView,
                     themeColor = Rose500,
                     bgColor = Rose50,

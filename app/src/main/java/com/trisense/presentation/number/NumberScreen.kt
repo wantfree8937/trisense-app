@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.trisense.presentation.component.PrimaryButton
@@ -58,8 +60,21 @@ fun NumberScreen(
         contentAlignment = Alignment.Center
     ) {
         when (state.gameState) {
-            NumberGameState.IDLE -> {
-                PrimaryButton(text = "Start", onClick = { viewModel.startGame() })
+            NumberGameState.IDLE, NumberGameState.COUNTDOWN -> {
+                // Show Countdown
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = state.countdownValue.toString(),
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp),
+                        fontWeight = FontWeight.Black,
+                        color = Slate900
+                    )
+                    Text(
+                        text = "Get Ready",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = Slate500
+                    )
+                }
             }
             NumberGameState.RUNNING -> {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {

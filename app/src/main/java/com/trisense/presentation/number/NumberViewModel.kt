@@ -16,16 +16,18 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 data class NumberState(
-    val gameState: NumberGameState = NumberGameState.IDLE,
+    val gameState: NumberGameState = NumberGameState.COUNTDOWN,
     val grid: List<Int> = emptyList(),
     val nextTarget: Int = 1,
     val currentTime: Long = 0L,
     val penaltyTime: Long = 0L,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val countdownValue: Int = 3
 )
 
 enum class NumberGameState {
     IDLE,
+    COUNTDOWN,
     RUNNING,
     FINISHED
 }
@@ -41,7 +43,31 @@ class NumberViewModel @Inject constructor(
     private var startTime: Long = 0
     private var timerJob: Job? = null
     
-    fun startGame() {
+    init {
+        startCountdown()
+    }
+    
+    fun startCountdown() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            _state.update { 
+                it.copy(
+                    gameState = NumberGameState.COUNTDOWN,
+                    countdownValue = 3,
+                    grid = emptyList() // Clear grid during countdown? Or show preview? Let's clear for now.
+                ) 
+            }
+            delay(1000)
+            _state.update { it.copy(countdownValue = 2) }
+            delay(1000)
+            _state.update { it.copy(countdownValue = 1) }
+            delay(1000)
+            startGameReal()
+        }
+    }
+    
+    // Internal real start
+    private fun startGameReal() {
         val numbers = (1..25).shuffled()
         startTime = System.currentTimeMillis()
         
@@ -64,6 +90,11 @@ class NumberViewModel @Inject constructor(
                 delay(30)
             }
         }
+    }
+    
+    // Public method if needed, but we use startCountdown now
+    fun startGame() {
+        startCountdown()
     }
 
     fun onNumberClick(number: Int) {
