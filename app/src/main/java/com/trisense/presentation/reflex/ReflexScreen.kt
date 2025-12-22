@@ -17,7 +17,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.trisense.domain.model.GameType
+import com.trisense.domain.model.Grade
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.trisense.presentation.component.GradeLegendDialog
+import com.trisense.domain.model.calculateGrade
+import androidx.compose.foundation.layout.size
 
 // Colors
 val BgBackground = Color(0xFFF8FAFC)
@@ -44,6 +56,15 @@ fun ReflexScreen(
         else -> Slate900
     }
 
+    var showHelpDialog by remember { mutableStateOf(false) }
+
+    if (showHelpDialog) {
+        GradeLegendDialog(
+            gameType = GameType.REFLEX,
+            onDismissRequest = { showHelpDialog = false }
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -52,6 +73,18 @@ fun ReflexScreen(
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
+        // Info Icon
+        if (state.gameState == ReflexGameState.IDLE || state.gameState == ReflexGameState.RESULT) {
+            androidx.compose.material3.TextButton(
+                onClick = { showHelpDialog = true },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 24.dp, end = 8.dp)
+            ) {
+                Text("Rank", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Slate500)
+            }
+        }
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             when (state.gameState) {
                 ReflexGameState.IDLE -> {
@@ -69,7 +102,18 @@ fun ReflexScreen(
                     Text("Tap to Try Again", style = MaterialTheme.typography.bodyLarge, color = contentColor)
                 }
                 ReflexGameState.RESULT -> {
-                    Text("${state.resultTime} ms", style = MaterialTheme.typography.displayLarge, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    val grade = calculateGrade(GameType.REFLEX, state.resultTime)
+                    
+                    Text(
+                        text = grade.label,
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = 72.sp),
+                        fontWeight = FontWeight.Black,
+                        color = Color(grade.colorHex.toInt())
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text("${state.resultTime} ms", style = MaterialTheme.typography.displayMedium, color = Slate900, fontWeight = FontWeight.Bold)
                     Text("Tap to Try Again", style = MaterialTheme.typography.bodyLarge, color = Slate500)
                 }
             }
