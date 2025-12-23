@@ -24,11 +24,11 @@ fun calculateGrade(gameType: GameType, score: Long): Grade {
         GameType.TIMING -> {
             val error = abs(score)
             when {
-                error <= 15 -> Grade.SS
-                error <= 40 -> Grade.S
-                error <= 80 -> Grade.A
-                error <= 150 -> Grade.B
-                error <= 300 -> Grade.C
+                error <= 30 -> Grade.SS
+                error <= 60 -> Grade.S
+                error <= 120 -> Grade.A
+                error <= 240 -> Grade.B
+                error <= 480 -> Grade.C
                 else -> Grade.D
             }
         }

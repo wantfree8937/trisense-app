@@ -36,20 +36,20 @@ fun GradeLegendDialog(
 ) {
     val criteria = when (gameType) {
         GameType.REFLEX -> listOf(
-            Grade.SS to "0 ~ 170 ms",
-            Grade.S to "171 ~ 210 ms",
-            Grade.A to "211 ~ 250 ms",
-            Grade.B to "251 ~ 300 ms",
-            Grade.C to "301 ~ 400 ms",
-            Grade.D to "401+ ms"
+            Grade.SS to "0 ~ 210 ms",
+            Grade.S to "211 ~ 270 ms",
+            Grade.A to "271 ~ 330 ms",
+            Grade.B to "331 ~ 390 ms",
+            Grade.C to "391 ~ 450 ms",
+            Grade.D to "451+ ms"
         )
         GameType.TIMING -> listOf(
-            Grade.SS to "±0 ~ 15 ms",
-            Grade.S to "±16 ~ 40 ms",
-            Grade.A to "±41 ~ 80 ms",
-            Grade.B to "±81 ~ 150 ms",
-            Grade.C to "±151 ~ 300 ms",
-            Grade.D to "±301+ ms"
+            Grade.SS to "±0 ~ 30 ms",
+            Grade.S to "±31 ~ 60 ms",
+            Grade.A to "±61 ~ 120 ms",
+            Grade.B to "±121 ~ 240 ms",
+            Grade.C to "±241 ~ 480 ms",
+            Grade.D to "±481+ ms"
         )
         GameType.NUMBER -> listOf(
             Grade.SS to "0 ~ 12.00 s",
